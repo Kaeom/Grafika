@@ -1,0 +1,2 @@
+# Grafika
+Grafika_beadandó
