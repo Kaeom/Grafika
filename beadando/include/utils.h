@@ -43,5 +43,7 @@ typedef struct Cow_position
  * Calculates radian from degree.
  */
 double degree_to_radian(double degree);
+void genGrid(double grid[60][60][2]);
+double genGridRandomOffset();
 
 #endif /* UTILS_H */

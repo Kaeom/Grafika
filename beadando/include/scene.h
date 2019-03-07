@@ -15,6 +15,7 @@ typedef struct Scene
 {
     Camera camera;
     Model cow;
+	Model grass;
     Material material;
 } Scene;
 
@@ -94,4 +95,5 @@ void renderBitmapString(
 		void *font,
 		char *string);
 void fog();
+void draw_grasses(const Scene* scene);
 #endif /* SCENE_H */

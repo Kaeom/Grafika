@@ -30,9 +30,14 @@ double cow_angle = -90;
 double cow_deltaAngle = 0.0f;
 double cow_deltaMove = 0;
 
+double grassLocations[60][60][2];
+
 void init_scene(Scene* scene)
 {
     load_model(&(scene->cow), "models/cow3.obj");
+	load_model(&(scene->grass), "models/grass1.obj");
+	
+	genGrid(grassLocations);
 	
 	//Kornyezeti vilagitas:
     scene->material.ambient.red = 0.8f;
@@ -63,6 +68,7 @@ void draw_scene(Scene* scene)
 	draw_skybox();
 	//cow_material(scene);//Cow Barna Material
 	draw_cow(scene);
+	draw_grasses(scene);
 	fog();	
 }
 
@@ -233,6 +239,19 @@ void draw_cow(const Scene* scene)
 			draw_model(&(scene->cow));
 		glPopMatrix();
 		glDisable(GL_TEXTURE_2D);
+}
+
+void draw_grasses(const Scene* scene){
+	int i,j;
+    for(i = 0;i < 60;i++){
+        for(j = 0;j < 60;j++){
+			glPushMatrix();			
+				glTranslatef(grassLocations[i][j][0],grassLocations[i][j][1],-10);
+				draw_model(&(scene->grass));
+			glPopMatrix();
+        }
+    }
+	
 }
 
 void computePos(float cow_deltaMove) {
