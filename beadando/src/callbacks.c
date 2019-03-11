@@ -1,8 +1,6 @@
 #include "callbacks.h"
 #include <GL/glut.h>
 #include <SOIL/SOIL.h>
-#include <obj/load.h>
-#include <obj/draw.h>
 #define VIEWPORT_RATIO (16.0 / 9.0)
 #define VIEWPORT_ASPECT 70.0
 
@@ -67,64 +65,64 @@ void motion(int x, int y)
 void pressKey(unsigned char key, int x, int y)
 {
     switch (key) {
-    case 'w': //elore mozgas
+    case 'w': /**elore mozgas*/
 		set_camera_speed(&camera, 5);
         break;
-    case 's': //hatra mozgas
+    case 's': /**hatra mozgas*/
 		set_camera_speed(&camera, -5);
         break;
-    case 'a': //balra mozgas
+    case 'a': /**balra mozgas*/
         set_camera_side_speed(&camera, 5);
         break;
-    case 'd': //jobbra mozgas
+    case 'd': /**jobbra mozgas*/
         set_camera_side_speed(&camera, -5);
         break;
-	case 'f': //Fog
+	case 'f': /**Fog*/
 		glDisable(GL_FOG);
 		break;		
-	case 'e': //kamera le
+	case 'e': /**kamera le*/
         set_camera_height(&camera, -0.1);
         break;
-	case 'q': //kamera fel
+	case 'q': /**kamera fel*/
 		set_camera_height(&camera, 0.1);
 		break;
 		
-	case '-': //Lights -
+	case '-': /**Lights -*/
 		set_lighting_intensity(-0.05f);
         break;
-	case '+': //Lights +
+	case '+': /**Lights +*/
         set_lighting_intensity(0.05f);
         break;
 		
-	//Cow_controll	
-	case '8': //cow forward
+	/**Cow_controll	*/
+	case '8': /**cow forward*/
 		move_cow_x(0.05f);
 		break;
-	case '5': //cow backward
+	case '5': /**cow backward*/
 		move_cow_x(-0.05f);
 		break;
-	case '4': //cow left
+	case '4': /**cow left*/
 		move_cow_y(0.05f);
 		break;
-	case '6': //cow right
+	case '6': /**cow right*/
 		move_cow_y(-0.05f);
 		break;
-	/*case '7': //cow angle left
+	/**case '7': //cow angle left
 		move_cow_angle(5.0f);
 		break;
 	case '9': //cow angle right
 		move_cow_angle(-5.0f);
 		break;
 	*/
-	case 'x': //Lights off
+	case 'x': /**Lights off*/
 		glDisable(GL_LIGHT0);
 		glDisable(GL_LIGHT1);
         break;
-	case 'c': //Lights on
+	case 'c': /**Lights on*/
 		glEnable(GL_LIGHT0);
 		glEnable(GL_LIGHT1);
         break;
-	case 27: //Exit
+	case 27: /**Exit*/
 		exit(0);
         break;
 	}
@@ -143,26 +141,26 @@ void releaseKey(unsigned char key, int x, int y)
         set_camera_side_speed(&camera, 0.0);
         break;
 		
-	case '8': //cow forward
+	case '8': /**cow forward*/
 		move_cow_x(0.00f);
 		break;
-	case '5': //cow backward
+	case '5': /**cow backward*/
 		move_cow_x(-0.00f);
 		break;
-	case '4': //cow left
+	case '4': /**cow left*/
 		move_cow_y(0.00f);
 		break;
-	case '6': //cow right
+	case '6': /**cow right*/
 		move_cow_y(-0.00f);
 		break;
 		
-	case 'f': //Fog
+	case 'f': /**Fog*/
 		glEnable(GL_FOG);
 		break;		
-	case '-': //Lights -
+	case '-': /**Lights -*/
 		set_lighting_intensity(-0.05f);
         break;
-	case '+': //Lights +
+	case '+': /**Lights +*/
         set_lighting_intensity(0.05f);
         break;
 	case 'x':

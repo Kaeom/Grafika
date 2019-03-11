@@ -23,7 +23,7 @@ void init_opengl()
 
 void PopMenuCreate(Scene* scene)
 {
-	//Menu:
+	/**Menu:*/
 	int sub1 = glutCreateMenu(switchMenu);
 	glutAddMenuEntry("Lights off", 1);
 	glutAddMenuEntry("Lights on", 2);

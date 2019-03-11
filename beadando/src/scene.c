@@ -1,13 +1,13 @@
 #include "scene.h"
 #include <GL/glut.h>
 #include <SOIL/SOIL.h>
-#include <obj/load.h>
-#include <obj/draw.h>
+#include "model.h"
+#include "draw.h"
 #include <math.h>
 
-//Globalis valtozok:
+/**Globalis valtozok:*/
 
-//Szin parameterezesek
+/**Szin parameterezesek*/
 double red = 0.3;
 double green = 0.0;
 double blue = 0.0;
@@ -16,10 +16,10 @@ double red2 = 0.8;
 double green2 = 0.0;
 double blue2 = 0.0;
 
-//Vilagitas ereje
+/**Vilagitas ereje*/
 double light = 0.8f;
 
-//Tehen hejzete, skalazasa, iranya
+/**Tehen hejzete, skalazasa, iranya*/
 double cow_lx = 0.0f;
 double cow_ly = 0.0f;
 double cow_x = 0.0f;
@@ -34,42 +34,46 @@ double grassLocations[60][60][2];
 
 void init_scene(Scene* scene)
 {
-    load_model(&(scene->cow), "models/cow3.obj");
-	load_model(&(scene->grass), "models/grass1.obj");
+    load_model("models/cow3.obj", &scene->cow.model);
+	scene->cow.texture = texture_names[6];
 	
-	genGrid(grassLocations);
+	//load_model("models/grass1.obj",&(scene->grass));
 	
-	//Kornyezeti vilagitas:
+	//genGrid(grassLocations);
+	
+	/**Kornyezeti vilagitas:*/
     scene->material.ambient.red = 0.8f;
     scene->material.ambient.green = 0.8f;
     scene->material.ambient.blue = 0.8f;
 	
-	//Szort vilagitas:
+	/**Szort vilagitas:*/
     scene->material.diffuse.red = 0.8f;
     scene->material.diffuse.green = 0.8f;
     scene->material.diffuse.blue = 0.8f;
 	
-	//"Csillogo" vilagitas:
+	/**"Csillogo" vilagitas:*/
     scene->material.specular.red = 0.9;
     scene->material.specular.green = 0.9;
     scene->material.specular.blue = 1.0;
 	
-	//Csillogas merteke:
+	/**Csillogas merteke:*/
     scene->material.shininess = 80;
 }
 
 
 void draw_scene(Scene* scene)
 {
+	glEnable(GL_TEXTURE_2D);
     set_material(&(scene->material));
     set_lighting();
     draw_origin();
-	white_material(scene);//Skybox Fehér Material
+	white_material(scene);/**Skybox Fehér Material*/
 	draw_skybox();
-	//cow_material(scene);//Cow Barna Material
+	/**cow_material(scene); //Cow Barna Material*/
 	draw_cow(scene);
-	draw_grasses(scene);
-	fog();	
+	/**draw_grasses(scene);*/
+	fog();
+	glDisable(GL_TEXTURE_2D);
 }
 
 void fog(){	
@@ -104,7 +108,7 @@ void set_lighting()
     glLightfv(GL_LIGHT1, GL_POSITION, position1);
 }
 
-//Feny erossegenek allitasa
+/**Feny erossegenek allitasa*/
 void set_lighting_intensity(double lightGet)
 {
 	
@@ -123,7 +127,7 @@ void set_lighting_intensity(double lightGet)
 		light = light;
 	}
 }
-//Anyagtulajdonságok
+/**Anyagtulajdonságok*/
 void set_material(const Material* material)
 {
     float ambient_material_color[] = {
@@ -152,7 +156,7 @@ void set_material(const Material* material)
 
 void white_material(Scene* scene)
 {
-	//Skybox világítása
+	/**Skybox világítása*/
 	float ambient_material_color[] = {0.8f,0.8f,0.8f,1.0f};
     float diffuse_material_color[] = {0.8f,0.8f,0.8f,1.0f};
     float specular_material_color[] = {0.8f,0.8f,0.8f,1.0f};
@@ -226,22 +230,22 @@ void cow_material(Scene* scene)
 }
 void draw_cow(const Scene* scene)
 {
+		
 		if (cow_deltaMove)
 		computePos(cow_deltaMove);
 		if (cow_deltaAngle)
-		computeDir(cow_deltaAngle);
-		glEnable(GL_TEXTURE_2D);		
-		glTranslatef(cow_deltaMove,0,cow_deltaAngle);				
-		glBindTexture(GL_TEXTURE_2D, texture_names[6]);
-		glScaled(cow_scale,cow_scale,cow_scale);
-		glRotatef(cow_angle, 0, 0, 2);	
-		glPushMatrix();
-			draw_model(&(scene->cow));
+		computeDir(cow_deltaAngle);	
+		glPushMatrix();							
+			glTranslatef(cow_deltaMove,0,cow_deltaAngle);	
+			glScaled(cow_scale,cow_scale,cow_scale);
+			glRotatef(cow_angle, 0, 0, 2);						
+			//glBindTexture(GL_TEXTURE_2D, texture_names[6]);
+			draw_model(&scene->cow.model);
 		glPopMatrix();
-		glDisable(GL_TEXTURE_2D);
+		
 }
 
-void draw_grasses(const Scene* scene){
+/**void draw_grasses(const Scene* scene){
 	int i,j;
     for(i = 0;i < 60;i++){
         for(j = 0;j < 60;j++){
@@ -252,7 +256,7 @@ void draw_grasses(const Scene* scene){
         }
     }
 	
-}
+}*/
 
 void computePos(float cow_deltaMove) {
 
@@ -327,8 +331,7 @@ void draw_skybox()
 	double y=30.0f;
 	double z=5.0f;
 	
-	glEnable(GL_TEXTURE_2D);
-	glDisable(GL_COLOR_MATERIAL);
+	//glDisable(GL_COLOR_MATERIAL);
 	//Korrigációs eltolás
 	glTranslatef(0.0f, 0.0f, 5.0f);
 	
@@ -410,8 +413,9 @@ void draw_skybox()
 	glVertex3f(x, y, x);
     glEnd();
 	
-	glDisable(GL_TEXTURE_2D);
 }
+
+
 
 void initialize_texture()
 {
@@ -433,7 +437,6 @@ void initialize_texture()
 	//glTexEnvf(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_DECAL);
 	glTexEnvf(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_MODULATE); //textúrára is hat ezzel a fény
 	
-	glEnable(GL_TEXTURE_2D);
 }
 
 GLuint load_texture(char* filename, Pixel* image)

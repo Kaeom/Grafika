@@ -1,7 +1,7 @@
 #ifndef SCENE_H
 #define SCENE_H
 #include "camera.h"
-#include <obj/model.h>
+#include "model.h"
 #include <SOIL/SOIL.h>
 #include <GL/glut.h>
 
@@ -11,13 +11,21 @@ Pixel* images[7];
 
 GLuint texture_names[7];
 
+typedef struct {
+    Model model;
+    int texture;
+    float material_ambient[4];
+}Entity;
+
 typedef struct Scene
 {
     Camera camera;
-    Model cow;
-	Model grass;
+    Entity cow;
+	Entity grass;
     Material material;
 } Scene;
+
+
 
 /**
  * Initialize the scene by loading models.
@@ -78,7 +86,6 @@ void white_material(Scene* scene);
 /**
  * Updating color palette.
  */
-
 void draw_cow(const Scene* scene);
 void move_cow_y(double y);
 void move_cow_x(double h);
