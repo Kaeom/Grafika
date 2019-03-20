@@ -34,8 +34,8 @@ double grassLocations[60][60][2];
 
 void init_scene(Scene* scene)
 {
-    load_model("models/cow3.obj", &scene->cow.model);
-	scene->cow.texture = texture_names[6];
+    load_model("models/plane.obj", &scene->cow.model);
+	//scene->cow.texture = texture_names[6];
 	
 	//load_model("models/grass1.obj",&(scene->grass));
 	
@@ -63,13 +63,13 @@ void init_scene(Scene* scene)
 
 void draw_scene(Scene* scene)
 {
-	glEnable(GL_TEXTURE_2D);
+	
     set_material(&(scene->material));
     set_lighting();
     draw_origin();
 	white_material(scene);/**Skybox Fehér Material*/
 	draw_skybox();
-	/**cow_material(scene); //Cow Barna Material*/
+	//cow_material(scene); //Cow Barna Material
 	draw_cow(scene);
 	/**draw_grasses(scene);*/
 	fog();
@@ -160,21 +160,7 @@ void white_material(Scene* scene)
 	float ambient_material_color[] = {0.8f,0.8f,0.8f,1.0f};
     float diffuse_material_color[] = {0.8f,0.8f,0.8f,1.0f};
     float specular_material_color[] = {0.8f,0.8f,0.8f,1.0f};
-	/*
-	//Környezeti világítás frissítése:
-    scene->material.ambient.red = 0.25f;
-    scene->material.ambient.green = 0.148f;
-    scene->material.ambient.blue = 0.06475f;
-	
-	//Szórt világítás frissítése:
-    scene->material.diffuse.red = 0.4f;
-    scene->material.diffuse.green = 0.2368f;
-    scene->material.diffuse.blue = 0.1036f;
-	
-	scene->material.specular.red = 0.774597f;
-	scene->material.specular.green = 0.458561f;
-	scene->material.specular.blue = 0.200621f;
-	*/
+
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ambient_material_color);
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuse_material_color);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular_material_color);
@@ -191,46 +177,10 @@ void cow_material(Scene* scene)
 	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,diff);
 	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,spec);
 	glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,shine);
-	
-	/*	
-	//Object világítása
-	float ambient_material_color[] = {0.25f,0.148f,0.06475f};
-    float diffuse_material_color[] = {0.4f,0.2368f,0.1036f};
-    float specular_material_color[] = {0.774597f,0.458561f,0.200621f};
-	
-    scene->material.ambient.red = 0.25f;
-    scene->material.ambient.green = 0.148f;
-    scene->material.ambient.blue = 0.06475f;
-	
-    scene->material.diffuse.red = 0.4f;
-    scene->material.diffuse.green = 0.2368f;
-    scene->material.diffuse.blue = 0.1036f;
-	
-	scene->material.specular.red = 0.774597f;
-	scene->material.specular.green = 0.458561f;
-	scene->material.specular.blue = 0.200621f;
-	
-	
-	scene->material.ambient.red = 0.5;
-    scene->material.ambient.green = 0.5;
-    scene->material.ambient.blue = 0.5;
-	
-	scene->material.diffuse.red = 0.2;
-    scene->material.diffuse.green = 0.2;
-    scene->material.diffuse.blue = 0.2;
-	
-	scene->material.specular.red = 0.9;
-    scene->material.specular.green = 0.9;
-    scene->material.specular.blue = 0.9;
-	
-	
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ambient_material_color);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuse_material_color);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular_material_color);*/
 }
 void draw_cow(const Scene* scene)
 {
-		
+		glEnable(GL_TEXTURE_2D);
 		if (cow_deltaMove)
 		computePos(cow_deltaMove);
 		if (cow_deltaAngle)
@@ -239,9 +189,10 @@ void draw_cow(const Scene* scene)
 			glTranslatef(cow_deltaMove,0,cow_deltaAngle);	
 			glScaled(cow_scale,cow_scale,cow_scale);
 			glRotatef(cow_angle, 0, 0, 2);						
-			//glBindTexture(GL_TEXTURE_2D, texture_names[6]);
+			glBindTexture(GL_TEXTURE_2D, texture_names[6]);
 			draw_model(&scene->cow.model);
 		glPopMatrix();
+		glDisable(GL_TEXTURE_2D);
 		
 }
 
@@ -331,6 +282,8 @@ void draw_skybox()
 	double y=30.0f;
 	double z=5.0f;
 	
+	glEnable(GL_TEXTURE_2D);
+	
 	//glDisable(GL_COLOR_MATERIAL);
 	//Korrigációs eltolás
 	glTranslatef(0.0f, 0.0f, 5.0f);
@@ -412,7 +365,7 @@ void draw_skybox()
 	glTexCoord2f(1.0,0.0);
 	glVertex3f(x, y, x);
     glEnd();
-	
+	glDisable(GL_TEXTURE_2D);
 }
 
 
@@ -428,7 +381,7 @@ void initialize_texture()
 									"textures/sky4.png", //3  Jobb oldal
 									"textures/sky5.png", //4  Fedőlap
 									"textures/asphalt.png", //5  Padló
-									"textures/cow.png"}; //6  Cow
+									"textures/plane.png"}; //6  Cow
 	for (i = 0; i < 7; ++i) {
 		printf("Texture Load: %d\n",i+1);
         texture_names[i] = load_texture(texture_filenames[i], images[i]);
