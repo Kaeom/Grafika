@@ -81,10 +81,10 @@ void pressKey(unsigned char key, int x, int y)
 		glDisable(GL_FOG);
 		break;		
 	case 'e': /**kamera le*/
-        set_camera_height(&camera, -0.1);
+        set_camera_height(&camera, -5);
         break;
 	case 'q': /**kamera fel*/
-		set_camera_height(&camera, 0.1);
+		set_camera_height(&camera, 5);
 		break;
 		
 	case '-': /**Lights -*/
@@ -107,13 +107,13 @@ void pressKey(unsigned char key, int x, int y)
 	case '6': /**cow right*/
 		move_cow_y(-0.05f);
 		break;
-	/**case '7': //cow angle left
+	case '7': /**cow angle left*/
 		move_cow_angle(5.0f);
 		break;
-	case '9': //cow angle right
+	case '9': /**cow angle right*/
 		move_cow_angle(-5.0f);
 		break;
-	*/
+	
 	case 'x': /**Lights off*/
 		glDisable(GL_LIGHT0);
 		glDisable(GL_LIGHT1);
@@ -140,20 +140,22 @@ void releaseKey(unsigned char key, int x, int y)
     case 'd':
         set_camera_side_speed(&camera, 0.0);
         break;
-		
-	case '8': /**cow forward*/
+	case 'q':
+	case 'e':
+		set_camera_height(&camera, 0);
+		break;		
+	case '8':
+	case '5':
 		move_cow_x(0.00f);
 		break;
-	case '5': /**cow backward*/
-		move_cow_x(-0.00f);
-		break;
-	case '4': /**cow left*/
+	case '4':
+	case '6':
 		move_cow_y(0.00f);
 		break;
-	case '6': /**cow right*/
-		move_cow_y(-0.00f);
+	case '7':
+	case '9':
+		move_cow_angle(0.0f);
 		break;
-		
 	case 'f': /**Fog*/
 		glEnable(GL_FOG);
 		break;		

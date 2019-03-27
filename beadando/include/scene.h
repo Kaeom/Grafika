@@ -13,8 +13,6 @@ GLuint texture_names[7];
 
 typedef struct {
     Model model;
-    int texture;
-    float material_ambient[4];
 }Entity;
 
 typedef struct Scene
@@ -87,11 +85,10 @@ void white_material(Scene* scene);
  * Updating color palette.
  */
 void draw_cow(const Scene* scene);
+void update_cow_position();
 void move_cow_y(double y);
 void move_cow_x(double h);
 void move_cow_angle(double angle);
-void computePos(float deltaMove);
-void computeDir(float deltaAngle);
 double* get_cow_x_position();
 double* get_cow_y_position();
 double* get_cow_z_position();

@@ -20,12 +20,13 @@ double blue2 = 0.0;
 double light = 0.8f;
 
 /**Tehen hejzete, skalazasa, iranya*/
-double cow_lx = 0.0f;
-double cow_ly = 0.0f;
 double cow_x = 0.0f;
 double cow_y = 0.0f;
-double cow_z = -4.1f;
-double cow_scale = 0.5f;
+double cow_z = -4.9f;
+double cow_speed_x = 0.0f;
+double cow_speed_y = 0.0f;
+double cow_speed_z = 0.0f;
+double cow_scale = 0.25f;
 double cow_angle = -90;
 double cow_deltaAngle = 0.0f;
 double cow_deltaMove = 0;
@@ -34,12 +35,11 @@ double grassLocations[60][60][2];
 
 void init_scene(Scene* scene)
 {
-    load_model("models/plane.obj", &scene->cow.model);
-	//scene->cow.texture = texture_names[6];
+    load_model("models/Cow.obj", &scene->cow.model);
 	
-	//load_model("models/grass1.obj",&(scene->grass));
+	/*load_model("models/grass1.obj",&(scene->grass));
 	
-	//genGrid(grassLocations);
+	genGrid(grassLocations);*/
 	
 	/**Kornyezeti vilagitas:*/
     scene->material.ambient.red = 0.8f;
@@ -69,7 +69,7 @@ void draw_scene(Scene* scene)
     draw_origin();
 	white_material(scene);/**Skybox Fehér Material*/
 	draw_skybox();
-	//cow_material(scene); //Cow Barna Material
+	cow_material(scene); //Cow Barna Material
 	draw_cow(scene);
 	/**draw_grasses(scene);*/
 	fog();
@@ -180,16 +180,13 @@ void cow_material(Scene* scene)
 }
 void draw_cow(const Scene* scene)
 {
-		glEnable(GL_TEXTURE_2D);
-		if (cow_deltaMove)
-		computePos(cow_deltaMove);
-		if (cow_deltaAngle)
-		computeDir(cow_deltaAngle);	
-		glPushMatrix();							
-			glTranslatef(cow_deltaMove,0,cow_deltaAngle);	
+		glEnable(GL_TEXTURE_2D);	
+		glPushMatrix();			
+				
+			//glBindTexture(GL_TEXTURE_2D, texture_names[6]);
+			glTranslatef(cow_x,cow_y,cow_z);	
 			glScaled(cow_scale,cow_scale,cow_scale);
-			glRotatef(cow_angle, 0, 0, 2);						
-			glBindTexture(GL_TEXTURE_2D, texture_names[6]);
+			glRotatef(cow_angle, 0, 0, 2);					
 			draw_model(&scene->cow.model);
 		glPopMatrix();
 		glDisable(GL_TEXTURE_2D);
@@ -209,38 +206,41 @@ void draw_cow(const Scene* scene)
 	
 }*/
 
-void computePos(float cow_deltaMove) {
-
-	cow_x += cow_deltaMove * cow_lx * 0.1f;
-	cow_y += cow_deltaMove * cow_ly * 0.1f;
-}
-
-void computeDir(float cow_deltaAngle) {
-
-	cow_angle += cow_deltaAngle;
-	cow_lx = sin(cow_angle);
-	cow_ly = -cos(cow_angle);
+void update_cow_position(){
+	
+	static int last_frame_time = 0;
+	int current_time;
+	double time;
+   
+    current_time = glutGet(GLUT_ELAPSED_TIME);
+    time = (double)(current_time - last_frame_time) / 1000;
+	
+	double angle;
+    double side_angle;
+	
+    angle = degree_to_radian(cow_angle);
+    side_angle = degree_to_radian(cow_angle + 90.0);
+	
+	cow_x += cos(angle) * cow_speed_x * time;
+	cow_y += cos(angle) * cow_speed_y * time;
+	cow_x += cos(side_angle) * cow_speed_x * time;
+	cow_y += cos(side_angle) * cow_speed_y * time;
 }
 
 void move_cow_y(double y)
 {
-		cow_deltaMove += y;
+		cow_speed_x = y;
 }
-void move_cow_x(double h)
+void move_cow_x(double x)
 {
-		/*double x,y;
-		x= h*cos(-80);
-		y= h*sin(-80);
-		cow_x += x;
-		cow_y += y;*/
-		cow_deltaAngle += h;
+		cow_speed_y = x;
 }
-/*
+
 void move_cow_angle(double angle)
 {
 		cow_angle += angle;
 }
-*/
+
 double* get_cow_x_position()
 {
 	return &cow_x;
@@ -381,7 +381,7 @@ void initialize_texture()
 									"textures/sky4.png", //3  Jobb oldal
 									"textures/sky5.png", //4  Fedőlap
 									"textures/asphalt.png", //5  Padló
-									"textures/plane.png"}; //6  Cow
+									"textures/cow.png"}; //6  Cow
 	for (i = 0; i < 7; ++i) {
 		printf("Texture Load: %d\n",i+1);
         texture_names[i] = load_texture(texture_filenames[i], images[i]);
