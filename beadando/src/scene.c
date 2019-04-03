@@ -26,8 +26,10 @@ double cow_z = -4.9f;
 double cow_speed_x = 0.0f;
 double cow_speed_y = 0.0f;
 double cow_speed_z = 0.0f;
-double cow_scale = 0.25f;
 double cow_angle = -90;
+double cow_angle_speed = 0.0f;
+
+double cow_scale = 0.25f;
 double cow_deltaAngle = 0.0f;
 double cow_deltaMove = 0;
 
@@ -36,8 +38,8 @@ double grassLocations[60][60][2];
 void init_scene(Scene* scene)
 {
     load_model("models/Cow.obj", &scene->cow.model);
-	
-	/*load_model("models/grass1.obj",&(scene->grass));
+
+	/**load_model("models/grass1.obj",&scene->grass.model);
 	
 	genGrid(grassLocations);*/
 	
@@ -192,14 +194,14 @@ void draw_cow(const Scene* scene)
 		glDisable(GL_TEXTURE_2D);
 		
 }
-
-/**void draw_grasses(const Scene* scene){
+/**
+void draw_grasses(const Scene* scene){
 	int i,j;
     for(i = 0;i < 60;i++){
         for(j = 0;j < 60;j++){
 			glPushMatrix();			
 				glTranslatef(grassLocations[i][j][0],grassLocations[i][j][1],-10);
-				draw_model(&(scene->grass));
+				draw_model(&(scene->grass.model));
 			glPopMatrix();
         }
     }
@@ -226,6 +228,19 @@ void update_cow_position(){
 	cow_y += sin(angle) * cow_speed_y * time;
 	cow_x += cos(side_angle) * cow_speed_x * time;
 	cow_y += sin(side_angle) * cow_speed_x * time;
+	cow_angle += cow_angle_speed * time;
+	
+	if(cow_x >= 29 ){
+		cow_x = 29;
+	}else if(cow_x <= -29){
+		cow_x = -29;
+	}
+	if(cow_y >= 29){
+		cow_y = 29;
+	}else if(cow_y <= -29){
+		cow_y = -29;
+	}
+	
 }
 
 void move_cow_y(double y)
@@ -239,7 +254,7 @@ void move_cow_x(double x)
 
 void move_cow_angle(double angle)
 {
-		cow_angle += angle;
+		cow_angle_speed = angle;
 }
 
 double* get_cow_x_position()

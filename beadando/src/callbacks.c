@@ -108,10 +108,10 @@ void pressKey(unsigned char key, int x, int y)
 		move_cow_y(0.02f);
 		break;
 	case '7': /**cow angle left*/
-		move_cow_angle(1.0f);
+		move_cow_angle(0.05f);
 		break;
 	case '9': /**cow angle right*/
-		move_cow_angle(-1.0f);
+		move_cow_angle(-0.05f);
 		break;
 	
 	case 'x': /**Lights off*/
