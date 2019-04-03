@@ -96,22 +96,22 @@ void pressKey(unsigned char key, int x, int y)
 		
 	/**Cow_controll	*/
 	case '8': /**cow forward*/
-		move_cow_x(0.05f);
+		move_cow_x(0.02f);
 		break;
 	case '5': /**cow backward*/
-		move_cow_x(-0.05f);
+		move_cow_x(-0.02f);
 		break;
 	case '4': /**cow left*/
-		move_cow_y(0.05f);
+		move_cow_y(-0.02f);
 		break;
 	case '6': /**cow right*/
-		move_cow_y(-0.05f);
+		move_cow_y(0.02f);
 		break;
 	case '7': /**cow angle left*/
-		move_cow_angle(5.0f);
+		move_cow_angle(1.0f);
 		break;
 	case '9': /**cow angle right*/
-		move_cow_angle(-5.0f);
+		move_cow_angle(-1.0f);
 		break;
 	
 	case 'x': /**Lights off*/

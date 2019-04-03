@@ -70,6 +70,7 @@ void draw_scene(Scene* scene)
 	white_material(scene);/**Skybox Fehér Material*/
 	draw_skybox();
 	cow_material(scene); //Cow Barna Material
+	update_cow_position();
 	draw_cow(scene);
 	/**draw_grasses(scene);*/
 	fog();
@@ -181,8 +182,7 @@ void cow_material(Scene* scene)
 void draw_cow(const Scene* scene)
 {
 		glEnable(GL_TEXTURE_2D);	
-		glPushMatrix();			
-				
+		glPushMatrix();						
 			//glBindTexture(GL_TEXTURE_2D, texture_names[6]);
 			glTranslatef(cow_x,cow_y,cow_z);	
 			glScaled(cow_scale,cow_scale,cow_scale);
@@ -210,10 +210,11 @@ void update_cow_position(){
 	
 	static int last_frame_time = 0;
 	int current_time;
-	double time;
-   
+	double time;	
+	   
     current_time = glutGet(GLUT_ELAPSED_TIME);
     time = (double)(current_time - last_frame_time) / 1000;
+    last_frame_time = time;
 	
 	double angle;
     double side_angle;
@@ -221,19 +222,19 @@ void update_cow_position(){
     angle = degree_to_radian(cow_angle);
     side_angle = degree_to_radian(cow_angle + 90.0);
 	
-	cow_x += cos(angle) * cow_speed_x * time;
-	cow_y += cos(angle) * cow_speed_y * time;
+	cow_x += cos(angle) * cow_speed_y * time;
+	cow_y += sin(angle) * cow_speed_y * time;
 	cow_x += cos(side_angle) * cow_speed_x * time;
-	cow_y += cos(side_angle) * cow_speed_y * time;
+	cow_y += sin(side_angle) * cow_speed_x * time;
 }
 
 void move_cow_y(double y)
 {
-		cow_speed_x = y;
+		cow_speed_y = y;
 }
 void move_cow_x(double x)
 {
-		cow_speed_y = x;
+		cow_speed_x = x;
 }
 
 void move_cow_angle(double angle)
