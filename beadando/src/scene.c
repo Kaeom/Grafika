@@ -39,9 +39,9 @@ void init_scene(Scene* scene)
 {
     load_model("models/Cow.obj", &scene->cow.model);
 
-	/**load_model("models/grass1.obj",&scene->grass.model);
+	load_model("models/grass1.obj",&scene->grass.model);
 	
-	genGrid(grassLocations);*/
+	genGrid(grassLocations);
 	
 	/**Kornyezeti vilagitas:*/
     scene->material.ambient.red = 0.8f;
@@ -71,10 +71,10 @@ void draw_scene(Scene* scene)
     draw_origin();
 	white_material(scene);/**Skybox Fehér Material*/
 	draw_skybox();
-	cow_material(scene); //Cow Barna Material
+	//cow_material(scene); //Cow Barna Material
 	update_cow_position();
 	draw_cow(scene);
-	/**draw_grasses(scene);*/
+	//draw_grasses(scene);
 	fog();
 	glDisable(GL_TEXTURE_2D);
 }
@@ -185,7 +185,7 @@ void draw_cow(const Scene* scene)
 {
 		glEnable(GL_TEXTURE_2D);	
 		glPushMatrix();						
-			//glBindTexture(GL_TEXTURE_2D, texture_names[6]);
+			glBindTexture(GL_TEXTURE_2D, texture_names[6]);
 			glTranslatef(cow_x,cow_y,cow_z);	
 			glScaled(cow_scale,cow_scale,cow_scale);
 			glRotatef(cow_angle, 0, 0, 2);					
@@ -194,19 +194,19 @@ void draw_cow(const Scene* scene)
 		glDisable(GL_TEXTURE_2D);
 		
 }
-/**
+
 void draw_grasses(const Scene* scene){
 	int i,j;
     for(i = 0;i < 60;i++){
         for(j = 0;j < 60;j++){
 			glPushMatrix();			
-				glTranslatef(grassLocations[i][j][0],grassLocations[i][j][1],-10);
+				glTranslatef(grassLocations[i][j][0],grassLocations[i][j][1],-5);
 				draw_model(&(scene->grass.model));
 			glPopMatrix();
         }
     }
 	
-}*/
+}
 
 void update_cow_position(){
 	
@@ -397,7 +397,7 @@ void initialize_texture()
 									"textures/sky4.png", //3  Jobb oldal
 									"textures/sky5.png", //4  Fedőlap
 									"textures/asphalt.png", //5  Padló
-									"textures/cow.png"}; //6  Cow
+									"textures/sky1.png"}; //6  Cow
 	for (i = 0; i < 7; ++i) {
 		printf("Texture Load: %d\n",i+1);
         texture_names[i] = load_texture(texture_filenames[i], images[i]);
@@ -416,10 +416,10 @@ GLuint load_texture(char* filename, Pixel* image)
     int width;
     int height;
 
-    image = (Pixel*)SOIL_load_image(filename, &width, &height, 0, SOIL_LOAD_RGB);	
+    image = (Pixel*)SOIL_load_image(filename, &width, &height, 0, SOIL_LOAD_RGBA);	
 
     glBindTexture(GL_TEXTURE_2D, texture_name);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, (Pixel*)image);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, (Pixel*)image);
 		
 	glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP);
     glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP);
