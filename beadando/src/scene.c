@@ -33,15 +33,19 @@ double cow_scale = 0.25f;
 double cow_deltaAngle = 0.0f;
 double cow_deltaMove = 0;
 
+int drawOrigin = 0;
+
 double grassLocations[60][60][2];
 
 void init_scene(Scene* scene)
 {
     load_model("models/Cow.obj", &scene->cow.model);
-
-	load_model("models/grass1.obj",&scene->grass.model);
 	
-	genGrid(grassLocations);
+	load_model("models/house.obj",&scene->house.model);
+
+	/**load_model("models/grass1.obj",&scene->grass.model);
+	
+	genGrid(grassLocations);*/
 	
 	/**Kornyezeti vilagitas:*/
     scene->material.ambient.red = 0.8f;
@@ -65,8 +69,7 @@ void init_scene(Scene* scene)
 
 void draw_scene(Scene* scene)
 {
-	
-    set_material(&(scene->material));
+    /**set_material(&(scene->material));*/
     set_lighting();
     draw_origin();
 	white_material(scene);/**Skybox Fehér Material*/
@@ -74,7 +77,9 @@ void draw_scene(Scene* scene)
 	//cow_material(scene); //Cow Barna Material
 	update_cow_position();
 	draw_cow(scene);
-	//draw_grasses(scene);
+	house_material(scene);
+	draw_house(scene);
+	/**draw_grasses(scene);*/
 	fog();
 	glDisable(GL_TEXTURE_2D);
 }
@@ -130,7 +135,7 @@ void set_lighting_intensity(double lightGet)
 		light = light;
 	}
 }
-/**Anyagtulajdonságok*/
+/**Anyagtulajdonságok
 void set_material(const Material* material)
 {
     float ambient_material_color[] = {
@@ -155,7 +160,7 @@ void set_material(const Material* material)
     glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuse_material_color);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular_material_color);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, &(material->shininess));
-}
+}*/
 
 void white_material(Scene* scene)
 {
@@ -171,7 +176,7 @@ void white_material(Scene* scene)
 
 void cow_material(Scene* scene)
 {
-	/* comment the material*/
+	/** comment the material*/
 	GLfloat amb[]={0.21f,0.12f,0.1f,1.0f};
 	GLfloat diff[]={0.71f,0.41f,0.19f,1.0f};
 	GLfloat spec[]={0.38f,0.27f,0.17f,1.0f};
@@ -181,9 +186,23 @@ void cow_material(Scene* scene)
 	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,spec);
 	glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,shine);
 }
+
+void house_material(Scene* scene)
+{
+	/** comment the material*/
+	GLfloat amb[]={0.23125f,0.23125f,0.23125f,1.0f};
+	GLfloat diff[]={0.2775f,0.2775f,0.2775f,1.0f};
+	GLfloat spec[]={0.773911f,0.773911f,0.773911f,1.0f};
+	GLfloat shine=89.6f;
+	glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,amb);
+	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,diff);
+	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,spec);
+	glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,shine);
+}
 void draw_cow(const Scene* scene)
 {
 		glEnable(GL_TEXTURE_2D);	
+		glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();						
 			glBindTexture(GL_TEXTURE_2D, texture_names[6]);
 			glTranslatef(cow_x,cow_y,cow_z);	
@@ -195,12 +214,24 @@ void draw_cow(const Scene* scene)
 		
 }
 
+void draw_house(const Scene* scene){
+	glEnable(GL_TEXTURE_2D);
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glBindTexture(GL_TEXTURE_2D,texture_names[6]);
+	glTranslatef(20,20,-5);
+	draw_model(&scene->house.model);
+	/**printf("draw house, valahova\}");*/
+	glPopMatrix();
+	glDisable(GL_TEXTURE_2D);
+}
+
 void draw_grasses(const Scene* scene){
 	int i,j;
     for(i = 0;i < 60;i++){
         for(j = 0;j < 60;j++){
 			glPushMatrix();			
-				glTranslatef(grassLocations[i][j][0],grassLocations[i][j][1],-5);
+				glTranslatef(grassLocations[i][j][0],grassLocations[i][j][1],5);
 				draw_model(&(scene->grass.model));
 			glPopMatrix();
         }
@@ -211,12 +242,12 @@ void draw_grasses(const Scene* scene){
 void update_cow_position(){
 	
 	static int last_frame_time = 0;
-	int current_time;
-	double time;	
-	   
+    int current_time;
+    double elapsed_time;
+   
     current_time = glutGet(GLUT_ELAPSED_TIME);
-    time = (double)(current_time - last_frame_time) / 1000;
-    last_frame_time = time;
+    elapsed_time = (double)(current_time - last_frame_time) / 1000;
+    last_frame_time = current_time;
 	
 	double angle;
     double side_angle;
@@ -224,11 +255,11 @@ void update_cow_position(){
     angle = degree_to_radian(cow_angle);
     side_angle = degree_to_radian(cow_angle + 90.0);
 	
-	cow_x += cos(angle) * cow_speed_y * time;
-	cow_y += sin(angle) * cow_speed_y * time;
-	cow_x += cos(side_angle) * cow_speed_x * time;
-	cow_y += sin(side_angle) * cow_speed_x * time;
-	cow_angle += cow_angle_speed * time;
+	cow_x += cos(angle) * cow_speed_y * elapsed_time;
+	cow_y += sin(angle) * cow_speed_y * elapsed_time;
+	cow_x += cos(side_angle) * cow_speed_x * elapsed_time;
+	cow_y += sin(side_angle) * cow_speed_x * elapsed_time;
+	cow_angle += cow_angle_speed * elapsed_time;
 	
 	if(cow_x >= 29 ){
 		cow_x = 29;
@@ -239,8 +270,7 @@ void update_cow_position(){
 		cow_y = 29;
 	}else if(cow_y <= -29){
 		cow_y = -29;
-	}
-	
+	}	
 }
 
 void move_cow_y(double y)
@@ -270,9 +300,12 @@ double* get_cow_z_position()
 	return &cow_z;
 }
 	
+	
+	
 
 void draw_origin()
 {
+	if(drawOrigin == 0){		
 	glEnable(GL_COLOR_MATERIAL);
 	glBegin(GL_LINES);
 
@@ -290,6 +323,11 @@ void draw_origin()
 
     glEnd();
 	glDisable(GL_COLOR_MATERIAL);
+	}	
+}
+
+void setOriginToDraw(int onOff){
+	drawOrigin = onOff;
 }
 
 void draw_skybox()
@@ -391,13 +429,14 @@ void initialize_texture()
     unsigned int i;
 	glPixelStorei(GL_UNPACK_ALIGNMENT,1);
 
-    char texture_filenames[][32] = {"textures/sky1.png", //0  Előlap
+    char texture_filenames[][32] = {"textures/sky1.png", //0  Elolap
 									"textures/sky2.png", //1  Bal oldal
-									"textures/sky3.png", //2  Hátlap
+									"textures/sky3.png", //2  Hatlap
 									"textures/sky4.png", //3  Jobb oldal
-									"textures/sky5.png", //4  Fedőlap
-									"textures/asphalt.png", //5  Padló
-									"textures/sky1.png"}; //6  Cow
+									"textures/sky5.png", //4  Fedolap
+									"textures/asphalt.png", //5  Padlo
+									"textures/cow.png", //6  Cow
+									"textures/house.png"}; //7 House
 	for (i = 0; i < 7; ++i) {
 		printf("Texture Load: %d\n",i+1);
         texture_names[i] = load_texture(texture_filenames[i], images[i]);

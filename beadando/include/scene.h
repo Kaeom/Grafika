@@ -5,9 +5,9 @@
 #include <SOIL/SOIL.h>
 #include <GL/glut.h>
 
-typedef GLubyte Pixel[7];
+typedef GLubyte Pixel[3];
 
-Pixel* images[7];
+Pixel* images[3];
 
 GLuint texture_names[7];
 
@@ -20,6 +20,7 @@ typedef struct Scene
     Camera camera;
     Entity cow;
 	Entity grass;
+	Entity house;
     Material material;
 } Scene;
 
@@ -92,12 +93,10 @@ void move_cow_angle(double angle);
 double* get_cow_x_position();
 double* get_cow_y_position();
 double* get_cow_z_position();
-void renderBitmapString(
-		float x,
-		float y,
-		float z,
-		void *font,
-		char *string);
 void fog();
 void draw_grasses(const Scene* scene);
+void draw_origin();
+void setOriginToDraw(int onOff);
+void draw_house(const Scene* scene);
+void house_material(Scene* scene);
 #endif /* SCENE_H */

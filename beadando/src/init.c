@@ -29,14 +29,16 @@ void PopMenuCreate(Scene* scene)
 	glutAddMenuEntry("Lights on", 2);
 	glutAddMenuEntry("Fog off", 3);
 	glutAddMenuEntry("Fog on",4);
+	glutAddMenuEntry("Draw origin on",5);
+	glutAddMenuEntry("Draw origin off",6);
 	
 	
 	int sub2 = glutCreateMenu(switchMenu);
-	glutAddMenuEntry("Camera movement: Left click + cursor", 5);
-	glutAddMenuEntry("Basic movement: W,A,S,D,Q,E", 6);
-	glutAddMenuEntry("Cow movement: Numbad 8,2,4,6,7,9", 7);
-	glutAddMenuEntry("Lights -,+: -,+", 8);
-	glutAddMenuEntry("Switch lights off-on: X,C", 9);
+	glutAddMenuEntry("Camera movement: Left click + cursor", 7);
+	glutAddMenuEntry("Basic movement: W,A,S,D,Q,E", 8);
+	glutAddMenuEntry("Cow movement: Numbad 8,2,4,6,7,9", 9);
+	glutAddMenuEntry("Lights -,+:", 9);
+	glutAddMenuEntry("Switch lights off-on: X,C", 10);
 	
 	glutCreateMenu(switchMenu);
 	glutAddSubMenu("Lights/Fog", sub1);
@@ -71,6 +73,16 @@ void switchMenu(int value)
 		case 4:
 		{
 			glEnable(GL_FOG);
+			break;
+		}
+		case 5:
+		{
+			setOriginToDraw(0);
+			break;
+		}
+		case 6:
+		{
+			setOriginToDraw(1);
 			break;
 		}
 		case 12:

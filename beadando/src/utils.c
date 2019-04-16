@@ -2,6 +2,7 @@
 
 #include <math.h>
 #include <time.h>
+#include <GL/glut.h>
 #include <stdlib.h>
 
 double degree_to_radian(double degree)
@@ -39,4 +40,3 @@ double genGridRandomOffset(){
     /** printf("%f\n", r);*/
     return r;
 }
-

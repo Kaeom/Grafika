@@ -37,6 +37,8 @@ int main(int argc, char* argv[])
     init_scene(&scene);
     init_camera(&camera);
     set_callbacks();
+	
+	glEnable(GL_DEPTH_TEST);
 
     glutMainLoop();
 
