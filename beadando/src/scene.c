@@ -141,8 +141,7 @@ void set_lighting()
 	GLfloat dirVector0[]={ 0,0,-1};
 	glLightf(GL_LIGHT2, GL_SPOT_CUTOFF, spot_cutoff);// set cutoff angle
     glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, dirVector0); 
-    glLightf(GL_LIGHT2, GL_SPOT_EXPONENT, 1); // set focusing strength
-	glEnable(GL_LIGHT2);
+    glLightf(GL_LIGHT2, GL_SPOT_EXPONENT, 1); // set focusing strength	
 }
 
 void set_spot(double gspot_x, double gspot_y, double gspot_z, double gspot_cutoff, double gfocusing)
@@ -379,9 +378,11 @@ void draw_skybox()
 	
 	glEnable(GL_TEXTURE_2D);
 	
-	//glEnable(GL_COLOR_MATERIAL);
+	glEnable(GL_COLOR_MATERIAL);
 	//Korrigációs eltolás
-	glTranslatef(0.0f, 0.0f, 5.0f);
+	glTranslatef(0.0f, 0.0f, 5.0f);	
+	glColor3f(1, 1, 1);
+	
 	
     glBindTexture(GL_TEXTURE_2D, texture_names[5]);
 	glBegin(GL_QUADS);
