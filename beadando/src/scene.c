@@ -18,6 +18,15 @@ double blue2 = 0.0;
 
 /**Vilagitas ereje*/
 double light = 0.8f;
+//double light = 0.0f;
+
+
+double spot_x = 0;
+double spot_y = 0;
+double spot_z = 10;
+double spot_cutoff = 20;
+double focusing = 1;
+
 
 /**Tehen hejzete, skalazasa, iranya*/
 double cow_x = 0.0f;
@@ -39,9 +48,9 @@ double grassLocations[60][60][2];
 
 void init_scene(Scene* scene)
 {
-    load_model("models/Cow.obj", &scene->cow.model);
+    load_model("models/cow.obj", &scene->cow.model);
 	
-	load_model("models/house.obj",&scene->house.model);
+	load_model("models/barn.obj",&scene->house.model);
 
 	/**load_model("models/grass1.obj",&scene->grass.model);
 	
@@ -74,10 +83,10 @@ void draw_scene(Scene* scene)
     draw_origin();
 	white_material(scene);/**Skybox Fehér Material*/
 	draw_skybox();
-	//cow_material(scene); //Cow Barna Material
+	/**cow_material(scene); //Cow Barna Material*/
 	update_cow_position();
 	draw_cow(scene);
-	house_material(scene);
+	/**house_material(scene);*/
 	draw_house(scene);
 	/**draw_grasses(scene);*/
 	fog();
@@ -98,7 +107,7 @@ void set_lighting()
 	float ambient_light[] = { light, light, light, 1.0f };
     float diffuse_light[] = { light, light, light, 1.0f };
     float specular_light[] = { light, light, light, 1.0f };
-    float position[] = { 0.0f, 0.0f, 10.0f, 0.0f };
+    float position[] = { 0.0f, 0.0f, 10.0f, 0.0f };		
 	
 	float ambient_light1[] = { light, light, light, 1.0f };
     float diffuse_light1[] = { light, light, light, 1.0f };
@@ -114,7 +123,39 @@ void set_lighting()
     glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuse_light1);
     glLightfv(GL_LIGHT1, GL_SPECULAR, specular_light1);
     glLightfv(GL_LIGHT1, GL_POSITION, position1);
+	
+
+	
+	float ambient_light2[] = { 1.0f, 0.0f, 0.0f, 1.0f };
+    float diffuse_light2[] = { 1.0f, 0.0f, 0.0f, 1.0f };
+    float specular_light2[] = { 1.0f, 0.0f, 0.0f, 1.0f };
+	//float position2[] = { 15.0f, 1.0f, 10.0f, 1.0f };
+	
+	float position2[] = { spot_x, spot_y, spot_z, 1.0f };
+	
+	glLightfv(GL_LIGHT2, GL_AMBIENT, ambient_light2);
+    glLightfv(GL_LIGHT2, GL_DIFFUSE, diffuse_light2);
+    glLightfv(GL_LIGHT2, GL_SPECULAR, specular_light2);
+    glLightfv(GL_LIGHT2, GL_POSITION, position2);
+	
+	GLfloat dirVector0[]={ 0,0,-1};
+	glLightf(GL_LIGHT2, GL_SPOT_CUTOFF, spot_cutoff);// set cutoff angle
+    glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, dirVector0); 
+    glLightf(GL_LIGHT2, GL_SPOT_EXPONENT, 1); // set focusing strength
+	glEnable(GL_LIGHT2);
 }
+
+void set_spot(double gspot_x, double gspot_y, double gspot_z, double gspot_cutoff, double gfocusing)
+{
+	spot_x += gspot_x;
+	spot_y += gspot_y;
+	spot_z += gspot_z;
+	spot_cutoff += gspot_cutoff;
+	focusing += gfocusing;
+	printf("Spot_X: %f,Spot_Y: %f,Spot_Z: %f,Spot_Vutoff: %f,Spot_focus: %f\n",spot_x,spot_y,spot_z,spot_cutoff,focusing);
+}
+
+
 
 /**Feny erossegenek allitasa*/
 void set_lighting_intensity(double lightGet)
@@ -190,10 +231,10 @@ void cow_material(Scene* scene)
 void house_material(Scene* scene)
 {
 	/** comment the material*/
-	GLfloat amb[]={0.23125f,0.23125f,0.23125f,1.0f};
-	GLfloat diff[]={0.2775f,0.2775f,0.2775f,1.0f};
-	GLfloat spec[]={0.773911f,0.773911f,0.773911f,1.0f};
-	GLfloat shine=89.6f;
+	GLfloat amb[]={0.25f,0.148f,0.06475f,1.0f};
+	GLfloat diff[]={0.4f,0.2368f,0.1036f,1.0f};
+	GLfloat spec[]={0.474597f,0.458561f,0.200621f,1.0f};
+	GLfloat shine=76.8f;
 	glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,amb);
 	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,diff);
 	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,spec);
@@ -215,15 +256,15 @@ void draw_cow(const Scene* scene)
 }
 
 void draw_house(const Scene* scene){
-	glEnable(GL_TEXTURE_2D);
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glBindTexture(GL_TEXTURE_2D,texture_names[6]);
-	glTranslatef(20,20,-5);
-	draw_model(&scene->house.model);
-	/**printf("draw house, valahova\}");*/
-	glPopMatrix();
-	glDisable(GL_TEXTURE_2D);
+		glEnable(GL_TEXTURE_2D);
+		glMatrixMode(GL_MODELVIEW);
+		glPushMatrix();
+			glBindTexture(GL_TEXTURE_2D, texture_names[7]);
+			glTranslatef(20,20,-5);
+			glRotatef(180,0,0,1);
+			draw_model(&scene->house.model);
+		glPopMatrix();
+		glDisable(GL_TEXTURE_2D);
 }
 
 void draw_grasses(const Scene* scene){
@@ -338,7 +379,7 @@ void draw_skybox()
 	
 	glEnable(GL_TEXTURE_2D);
 	
-	//glDisable(GL_COLOR_MATERIAL);
+	//glEnable(GL_COLOR_MATERIAL);
 	//Korrigációs eltolás
 	glTranslatef(0.0f, 0.0f, 5.0f);
 	
@@ -347,11 +388,11 @@ void draw_skybox()
 	//Padló:
     glTexCoord2f(0.0,0.0);
     glVertex3f(-x, -y, -z);
-	glTexCoord2f(0.0,1.0);
+	glTexCoord2f(0.0,3.0);
     glVertex3f(-x, y, -z);
-	glTexCoord2f(1.0,1.0);
+	glTexCoord2f(3.0,3.0);
 	glVertex3f(x, y, -z);
-	glTexCoord2f(1.0,0.0);
+	glTexCoord2f(3.0,0.0);
 	glVertex3f(x, -y, -z);
     glEnd();
 	
@@ -429,15 +470,15 @@ void initialize_texture()
     unsigned int i;
 	glPixelStorei(GL_UNPACK_ALIGNMENT,1);
 
-    char texture_filenames[][32] = {"textures/sky1.png", //0  Elolap
+    char texture_filenames[][32] = {"textures/sky1.png", //0  Előlap
 									"textures/sky2.png", //1  Bal oldal
-									"textures/sky3.png", //2  Hatlap
+									"textures/sky3.png", //2  Hátlap
 									"textures/sky4.png", //3  Jobb oldal
-									"textures/sky5.png", //4  Fedolap
-									"textures/asphalt.png", //5  Padlo
+									"textures/sky5.png", //4  Fedőlap
+									"textures/grass1.jpg", //5  Padló
 									"textures/cow.png", //6  Cow
-									"textures/house.png"}; //7 House
-	for (i = 0; i < 7; ++i) {
+									"textures/barn.png"}; //7 Barn
+	for (i = 0; i < 8; ++i) {
 		printf("Texture Load: %d\n",i+1);
         texture_names[i] = load_texture(texture_filenames[i], images[i]);
     }
@@ -445,6 +486,7 @@ void initialize_texture()
 	//glTexEnvf(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_DECAL);
 	glTexEnvf(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_MODULATE); //textúrára is hat ezzel a fény
 	
+	glEnable(GL_TEXTURE_2D);
 }
 
 GLuint load_texture(char* filename, Pixel* image)
@@ -455,13 +497,13 @@ GLuint load_texture(char* filename, Pixel* image)
     int width;
     int height;
 
-    image = (Pixel*)SOIL_load_image(filename, &width, &height, 0, SOIL_LOAD_RGBA);	
+    image = (Pixel*)SOIL_load_image(filename, &width, &height, 0, SOIL_LOAD_RGB);	
 
     glBindTexture(GL_TEXTURE_2D, texture_name);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, (Pixel*)image);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, (Pixel*)image);
 		
-	glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP);
-    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP);
+	glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
 
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);	

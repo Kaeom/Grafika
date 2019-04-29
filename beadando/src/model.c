@@ -1,9 +1,12 @@
 #include "model.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #define LINE_BUFFER_SIZE 1024
 
+// TODO: Add line info to the token array for easier debugging!
 
 int count_tokens(const char* text)
 {
@@ -24,7 +27,6 @@ int count_tokens(const char* text)
 
     return count;
 }
-
 
 void extract_tokens(const char* text, struct TokenArray* token_array)
 {
@@ -51,7 +53,6 @@ void extract_tokens(const char* text, struct TokenArray* token_array)
 	}
 }
 
-
 char* copy_token(const char* text, int offset, int length)
 {
 	char* token;
@@ -66,13 +67,11 @@ char* copy_token(const char* text, int offset, int length)
 	return token;
 }
 
-
 void insert_token(const char* token, struct TokenArray* token_array)
 {
 	token_array->tokens[token_array->n_tokens] = (char*)token;
 	++token_array->n_tokens;
 }
-
 
 int calc_token_length(const char* text, int start_index)
 {
@@ -87,7 +86,6 @@ int calc_token_length(const char* text, int start_index)
 	return length;
 }
 
-
 void free_tokens(struct TokenArray* token_array)
 {
 	int i;
@@ -98,7 +96,23 @@ void free_tokens(struct TokenArray* token_array)
 	free(token_array->tokens);
 }
 
+int load_model(const char* filename, struct Model* model)
+{
+    FILE* obj_file = fopen(filename, "r");
+    printf("Load model '%s' ...\n", filename);
+    if (obj_file == NULL) {
+        printf("ERROR: Unable to open '%s' file!\n", filename);
+    	return FALSE;
+    }
+    printf("Count ..\n");
+	count_elements(obj_file, model);
+    printf("Create ..\n");
+	create_arrays(model);
+    printf("Read ..\n");
+	read_elements(obj_file, model);
 
+	return TRUE;
+}
 
 void print_model_info(const struct Model* model)
 {
@@ -109,7 +123,6 @@ void print_model_info(const struct Model* model)
     printf("Quads: %d\n", model->n_quads);
 }
 
-
 void free_model(struct Model* model)
 {
     free(model->vertices);
@@ -118,7 +131,6 @@ void free_model(struct Model* model)
     free(model->triangles);
     free(model->quads);
 }
-
 
 void count_elements(FILE* file, struct Model* model)
 {
@@ -130,7 +142,6 @@ void count_elements(FILE* file, struct Model* model)
         count_element_in_line(line, model);
     }
 }
-
 
 void read_elements(FILE* file, struct Model* model)
 {
@@ -148,8 +159,7 @@ void read_elements(FILE* file, struct Model* model)
     }
 }
 
-
-void init_model_counters(Model* model)
+void init_model_counters(struct Model* model)
 {
     model->n_vertices = 0;
     model->n_texture_vertices = 0;
@@ -157,7 +167,6 @@ void init_model_counters(Model* model)
     model->n_triangles = 0;
     model->n_quads = 0;
 }
-
 
 void clear_comment(char* line)
 {
@@ -171,8 +180,7 @@ void clear_comment(char* line)
     }
 }
 
-
-void count_element_in_line(const char* line, Model* model)
+void count_element_in_line(const char* line, struct Model* model)
 {
 	struct TokenArray token_array;
 	char* first_token;
@@ -206,8 +214,7 @@ void count_element_in_line(const char* line, Model* model)
     free_tokens(&token_array);
 }
 
-
-void read_element_from_line(const char* line, Model* model)
+void read_element_from_line(const char* line, struct Model* model)
 {
 	struct TokenArray token_array;
 	char* first_token;
@@ -253,7 +260,6 @@ void read_element_from_line(const char* line, Model* model)
 	free_tokens(&token_array);
 }
 
-
 void create_arrays(struct Model* model)
 {
     model->vertices = (struct Vertex*)malloc((model->n_vertices + 1) * sizeof(struct Vertex));
@@ -263,7 +269,6 @@ void create_arrays(struct Model* model)
     model->quads = (struct Quad*)malloc(model->n_quads * sizeof(struct Quad));
 }
 
-
 void read_vertex(const struct TokenArray* token_array, struct Vertex* vertex)
 {
     vertex->x = atof(token_array->tokens[1]);
@@ -271,13 +276,11 @@ void read_vertex(const struct TokenArray* token_array, struct Vertex* vertex)
     vertex->z = atof(token_array->tokens[3]);
 }
 
-
 void read_texture_vertex(const struct TokenArray* token_array, struct TextureVertex* texture_vertex)
 {
     texture_vertex->u = atof(token_array->tokens[1]);
     texture_vertex->v = atof(token_array->tokens[2]);
 }
-
 
 void read_normal(const struct TokenArray* token_array, struct Vertex* normal)
 {
@@ -285,7 +288,6 @@ void read_normal(const struct TokenArray* token_array, struct Vertex* normal)
     normal->y = atof(token_array->tokens[2]);
     normal->z = atof(token_array->tokens[3]);
 }
-
 
 void read_triangle(const struct TokenArray* token_array, struct Triangle* triangle)
 {
@@ -296,7 +298,6 @@ void read_triangle(const struct TokenArray* token_array, struct Triangle* triang
     }
 }
 
-
 void read_quad(const struct TokenArray* token_array, struct Quad* quad)
 {
     int i;
@@ -305,7 +306,6 @@ void read_quad(const struct TokenArray* token_array, struct Quad* quad)
         read_face_point(token_array->tokens[i + 1], &quad->points[i]);
     }
 }
-
 
 void read_face_point(const char* text, struct FacePoint* face_point)
 {
@@ -328,6 +328,7 @@ void read_face_point(const char* text, struct FacePoint* face_point)
         face_point->normal_index = INVALID_VERTEX_INDEX;
     }
     else if (delimiter_count == 2) {
+        // TODO: Handle the v//n special case!
         face_point->vertex_index = read_next_index(token, &length);
         token += length;
         face_point->texture_index = read_next_index(token, &length);
@@ -338,7 +339,6 @@ void read_face_point(const char* text, struct FacePoint* face_point)
         printf("ERROR: Invalid face token! '%s'", text);
     }
 }
-
 
 int count_face_delimiters(const char* text)
 {
@@ -355,7 +355,6 @@ int count_face_delimiters(const char* text)
 
     return count;
 }
-
 
 int read_next_index(const char* text, int* length)
 {
@@ -385,7 +384,6 @@ int read_next_index(const char* text, int* length)
     return index;
 }
 
-
 int is_digit(char c)
 {
     if (c >= '0' && c <= '9') {
@@ -393,7 +391,6 @@ int is_digit(char c)
     }
     return FALSE;
 }
-
 
 int is_valid_triangle(const struct Triangle* triangle, const struct Model* model)
 {
@@ -415,7 +412,6 @@ int is_valid_triangle(const struct Triangle* triangle, const struct Model* model
     }
     return TRUE;
 }
-
 
 int is_valid_quad(const struct Quad* quad, const struct Model* model)
 {
@@ -441,7 +437,6 @@ int is_valid_quad(const struct Quad* quad, const struct Model* model)
     }
     return TRUE;
 }
-
 
 void print_bounding_box(const struct Model* model)
 {
@@ -485,11 +480,10 @@ void print_bounding_box(const struct Model* model)
     }
 
     printf("Bounding box:\n");
-    printf("x in [%f, %f]\n", min_x, max_x);
-    printf("y in [%f, %f]\n", min_y, max_y);
-    printf("z in [%f, %f]\n", min_z, max_z);
+    printf("x in [%lf, %lf]\n", min_x, max_x);
+    printf("y in [%lf, %lf]\n", min_y, max_y);
+    printf("z in [%lf, %lf]\n", min_z, max_z);
 }
-
 
 void scale_model(struct Model* model, double sx, double sy, double sz)
 {
@@ -501,50 +495,3 @@ void scale_model(struct Model* model, double sx, double sy, double sz)
 		model->vertices[i].z *= sz;
 	}
 }
-
-
-int load_model(const char* filename, Model* model)
-{
-    FILE* obj_file = fopen(filename, "r");
-    printf("Load model '%s' ...\n", filename);
-    if (obj_file == NULL) {
-        printf("ERROR: Unable to open '%s' file!\n", filename);
-    	return FALSE;
-    }
-    printf("Count ..\n");
-	count_elements(obj_file, model);
-    printf("Create ..\n");
-	create_arrays(model);
-    printf("Read ..\n");
-	read_elements(obj_file, model);
-
-	return TRUE;
-}
-
-
-/*void init_entities(World* world){
-
-	//Load the skybox texture.
-	world->skybox.texture = load_texture("textures\\sky.png");
-
-	//Load the sun object and texture.
-	load_model("objects\\geoid.obj", &world->sun.model);
-	world->sun.texture = load_texture("textures\\sun.png");
-	scale_model (&world->sun.model, 1.5, 1.5, 1.5);
-
-	//Load the sun object and texture.
-	load_model("objects\\deathstar.obj", &world->deathstar.model);
-	world->deathstar.texture = load_texture("textures\\deathstar.png");
-	scale_model (&world->deathstar.model, 0.001, 0.001, 0.001);
-
-	//Load the earth object and texture.
-	load_model("objects\\geoid.obj", &world->earth.model);
-	world->earth.texture = load_texture("textures\\earth.png");
-	scale_model (&world->earth.model, 0.5, 0.5, 0.5);
-
-	//Load the falcon object and texture.
-	load_model("objects\\falcon.obj", &world->falcon.model);
-	world->falcon.texture = load_texture("textures\\falcon.png");
-	scale_model (&world->falcon.model, 0.5, 0.5, 0.5);
-
-}*/

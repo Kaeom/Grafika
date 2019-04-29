@@ -77,7 +77,7 @@ void pressKey(unsigned char key, int x, int y)
     case 'd': /**jobbra mozgas*/
         set_camera_side_speed(&camera, -5);
         break;
-	case 'f': /**Fog*/
+	case 'r': /**Fog*/
 		glDisable(GL_FOG);
 		break;		
 	case 'e': /**kamera le*/
@@ -87,6 +87,39 @@ void pressKey(unsigned char key, int x, int y)
 		set_camera_height(&camera, 5);
 		break;
 		
+	case 'v':
+		set_spot(1,0,0,0,0);
+		break;
+	case 'b':
+		set_spot(0,1,0,0,0);
+		break;
+	case 'n':
+		set_spot(0,0,1,0,0);
+		break;
+	case 'm':
+		set_spot(0,0,0,10,0);
+		break;
+	case ',':
+		set_spot(0,0,0,0,1);
+		break;
+		
+	case 'f':
+		set_spot(-1,0,0,0,0);
+		break;
+	case 'g':
+		set_spot(0,-1,0,0,0);
+		break;
+	case 'h':
+		set_spot(0,0,-1,0,0);
+		break;
+	case 'j':
+		set_spot(0,0,0,-10,0);
+		break;
+	case 'k':
+		set_spot(0,0,0,0,-1);
+		break;
+		
+	
 	case '-': /**Lights -*/
 		set_lighting_intensity(-0.05f);
         break;
@@ -156,7 +189,7 @@ void releaseKey(unsigned char key, int x, int y)
 	case '9':
 		move_cow_angle(0.0f);
 		break;
-	case 'f': /**Fog*/
+	case 'r': /**Fog*/
 		glEnable(GL_FOG);
 		break;		
 	case '-': /**Lights -*/

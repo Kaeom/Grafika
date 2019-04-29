@@ -99,4 +99,5 @@ void draw_origin();
 void setOriginToDraw(int onOff);
 void draw_house(const Scene* scene);
 void house_material(Scene* scene);
+void set_spot(double gspot_x, double gspot_y, double gspot_z, double gspot_cutoff, double gfocusing);
 #endif /* SCENE_H */
