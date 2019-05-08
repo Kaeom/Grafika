@@ -86,7 +86,7 @@ void pressKey(unsigned char key, int x, int y)
 	case 'q': /**kamera fel*/
 		set_camera_height(&camera, 5);
 		break;
-		
+	/**	
 	case 'v':
 		set_spot(1,0,0,0,0);
 		break;
@@ -118,32 +118,32 @@ void pressKey(unsigned char key, int x, int y)
 	case 'k':
 		set_spot(0,0,0,0,-1);
 		break;
-		
+		*/
 	
-	case '-': /**Lights -*/
+	case 'n': /**Lights -*/
 		set_lighting_intensity(-0.05f);
         break;
-	case '+': /**Lights +*/
+	case 'm': /**Lights +*/
         set_lighting_intensity(0.05f);
         break;
 		
 	/**Cow_controll	*/
-	case '8': /**cow forward*/
+	case 'u': /**cow forward*/
 		move_cow_x(5.0f);
 		break;
-	case '5': /**cow backward*/
+	case 'j': /**cow backward*/
 		move_cow_x(-5.0f);
 		break;
-	case '4': /**cow left*/
+	case 'z': /**cow left*/
 		move_cow_y(-5.0f);
 		break;
-	case '6': /**cow right*/
+	case 'i': /**cow right*/
 		move_cow_y(5.0f);
 		break;
-	case '7': /**cow angle left*/
+	case 'h': /**cow angle left*/
 		move_cow_angle(60.0f);
 		break;
-	case '9': /**cow angle right*/
+	case 'k': /**cow angle right*/
 		move_cow_angle(-60.0f);
 		break;
 	
@@ -177,35 +177,35 @@ void releaseKey(unsigned char key, int x, int y)
 	case 'e':
 		set_camera_height(&camera, 0);
 		break;		
-	case '8':
-	case '5':
+	case 'u':
+	case 'j':
 		move_cow_x(0.00f);
 		break;
-	case '4':
-	case '6':
+	case 'z':
+	case 'i':
 		move_cow_y(0.00f);
 		break;
-	case '7':
-	case '9':
+	case 'h':
+	case 'k':
 		move_cow_angle(0.0f);
 		break;
 	case 'r': /**Fog*/
 		glEnable(GL_FOG);
 		break;		
-	case '-': /**Lights -*/
+	case 'n': /**Lights -*/
 		set_lighting_intensity(-0.05f);
         break;
-	case '+': /**Lights +*/
+	case 'm': /**Lights +*/
         set_lighting_intensity(0.05f);
         break;
-	case 'x':
+	/**case 'x':
 		glDisable(GL_LIGHT0);
 		glDisable(GL_LIGHT1);
         break;
 	case 'c':
 		glEnable(GL_LIGHT0);
 		glEnable(GL_LIGHT1);
-        break;
+        break;*/
 	}
     glutPostRedisplay();
 }

@@ -78,15 +78,15 @@ void init_scene(Scene* scene)
 
 void draw_scene(Scene* scene)
 {
-    /**set_material(&(scene->material));*/
+    //set_material(&(scene->material));
     set_lighting();
     draw_origin();
 	white_material(scene);/**Skybox Fehér Material*/
 	draw_skybox();
-	/**cow_material(scene); //Cow Barna Material*/
+	cow_material(scene); //Cow Barna Material*/
 	update_cow_position();
 	draw_cow(scene);
-	/**house_material(scene);*/
+	//house_material(scene);
 	draw_house(scene);
 	/**draw_grasses(scene);*/
 	fog();
@@ -104,14 +104,14 @@ void fog(){
 
 void set_lighting()
 {
-	float ambient_light[] = { light, light, light, 1.0f };
-    float diffuse_light[] = { light, light, light, 1.0f };
-    float specular_light[] = { light, light, light, 1.0f };
+	float ambient_light[] = { light, light, light, 0.8f };
+    float diffuse_light[] = { light, light, light, 0.8f };
+    float specular_light[] = { light, light, light, 0.8f };
     float position[] = { 0.0f, 0.0f, 10.0f, 0.0f };		
 	
-	float ambient_light1[] = { light, light, light, 1.0f };
-    float diffuse_light1[] = { light, light, light, 1.0f };
-    float specular_light1[] = { light, light, light, 1.0f };
+	float ambient_light1[] = { light, light, light, 0.8f };
+    float diffuse_light1[] = { light, light, light, 0.8f };
+    float specular_light1[] = { light, light, light, 0.8f };
     float position1[] = { 0.0f, 0.0f, 0.0f, 0.0f };
 
     glLightfv(GL_LIGHT0, GL_AMBIENT, ambient_light);
@@ -124,7 +124,7 @@ void set_lighting()
     glLightfv(GL_LIGHT1, GL_SPECULAR, specular_light1);
     glLightfv(GL_LIGHT1, GL_POSITION, position1);
 	
-
+/**
 	
 	float ambient_light2[] = { 1.0f, 0.0f, 0.0f, 1.0f };
     float diffuse_light2[] = { 1.0f, 0.0f, 0.0f, 1.0f };
@@ -142,6 +142,7 @@ void set_lighting()
 	glLightf(GL_LIGHT2, GL_SPOT_CUTOFF, spot_cutoff);// set cutoff angle
     glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, dirVector0); 
     glLightf(GL_LIGHT2, GL_SPOT_EXPONENT, 1); // set focusing strength	
+	*/
 }
 
 void set_spot(double gspot_x, double gspot_y, double gspot_z, double gspot_cutoff, double gfocusing)
@@ -217,9 +218,9 @@ void white_material(Scene* scene)
 void cow_material(Scene* scene)
 {
 	/** comment the material*/
-	GLfloat amb[]={0.21f,0.12f,0.1f,1.0f};
-	GLfloat diff[]={0.71f,0.41f,0.19f,1.0f};
-	GLfloat spec[]={0.38f,0.27f,0.17f,1.0f};
+	GLfloat amb[]={0.21f,0.12f,0.054f,0.5f};
+	GLfloat diff[]={0.71f,0.41f,0.19f,0.5f};
+	GLfloat spec[]={0.38f,0.27f,0.17f,0.5f};
 	GLfloat shine=60;
 	glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,amb);
 	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,diff);
@@ -230,9 +231,9 @@ void cow_material(Scene* scene)
 void house_material(Scene* scene)
 {
 	/** comment the material*/
-	GLfloat amb[]={0.25f,0.148f,0.06475f,1.0f};
-	GLfloat diff[]={0.4f,0.2368f,0.1036f,1.0f};
-	GLfloat spec[]={0.474597f,0.458561f,0.200621f,1.0f};
+	GLfloat amb[]={0.25f,0.148f,0.06475f,0.5f};
+	GLfloat diff[]={0.4f,0.2368f,0.1036f,0.5f};
+	GLfloat spec[]={0.474597f,0.458561f,0.200621f,0.5f};
 	GLfloat shine=76.8f;
 	glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,amb);
 	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,diff);
@@ -462,6 +463,7 @@ void draw_skybox()
 	glVertex3f(x, y, x);
     glEnd();
 	glDisable(GL_TEXTURE_2D);
+	glDisable(GL_COLOR_MATERIAL);
 }
 
 

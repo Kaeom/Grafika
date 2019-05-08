@@ -16,9 +16,9 @@ void init_opengl()
     glClearDepth(1.0);
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_LIGHTING);
-    /*glEnable(GL_LIGHT0);
-	glEnable(GL_LIGHT1);*/
-	glEnable(GL_LIGHT2);
+    glEnable(GL_LIGHT0);
+	glEnable(GL_LIGHT1);
+	/**glEnable(GL_LIGHT2);*/
 	glEnable(GL_FOG);
 }
 
@@ -37,8 +37,8 @@ void PopMenuCreate(Scene* scene)
 	int sub2 = glutCreateMenu(switchMenu);
 	glutAddMenuEntry("Camera movement: Left click + cursor", 7);
 	glutAddMenuEntry("Basic movement: W,A,S,D,Q,E", 8);
-	glutAddMenuEntry("Cow movement: Numbad 8,2,4,6,7,9", 9);
-	glutAddMenuEntry("Lights -,+:", 9);
+	glutAddMenuEntry("Cow movement: Numbad u,j,h,k,z,i", 9);
+	glutAddMenuEntry("Lights n,m:", 9);
 	glutAddMenuEntry("Switch lights off-on: X,C", 10);
 	
 	glutCreateMenu(switchMenu);
