@@ -218,9 +218,9 @@ void white_material(Scene* scene)
 void cow_material(Scene* scene)
 {
 	/** comment the material*/
-	GLfloat amb[]={0.21f,0.12f,0.054f,0.5f};
-	GLfloat diff[]={0.71f,0.41f,0.19f,0.5f};
-	GLfloat spec[]={0.38f,0.27f,0.17f,0.5f};
+	GLfloat amb[]={0.21f,0.12f,0.054f,1.0f};
+	GLfloat diff[]={0.71f,0.41f,0.19f,1.0f};
+	GLfloat spec[]={0.38f,0.27f,0.17f,1.0f};
 	GLfloat shine=60;
 	glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,amb);
 	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,diff);
@@ -231,9 +231,9 @@ void cow_material(Scene* scene)
 void house_material(Scene* scene)
 {
 	/** comment the material*/
-	GLfloat amb[]={0.25f,0.148f,0.06475f,0.5f};
-	GLfloat diff[]={0.4f,0.2368f,0.1036f,0.5f};
-	GLfloat spec[]={0.474597f,0.458561f,0.200621f,0.5f};
+	GLfloat amb[]={0.25f,0.148f,0.06475f,1.0f};
+	GLfloat diff[]={0.4f,0.2368f,0.1036f,1.0f};
+	GLfloat spec[]={0.474597f,0.458561f,0.200621f,1.0f};
 	GLfloat shine=76.8f;
 	glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,amb);
 	glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,diff);
