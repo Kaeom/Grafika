@@ -7,19 +7,9 @@
 
 /**Globalis valtozok:*/
 
-/**Szin parameterezesek*/
-double red = 0.3;
-double green = 0.0;
-double blue = 0.0;
-
-double red2 = 0.8;
-double green2 = 0.0;
-double blue2 = 0.0;
-
 /**Vilagitas ereje*/
 double light = 0.8f;
 //double light = 0.0f;
-
 
 double spot_x = 0;
 double spot_y = 0;
@@ -52,8 +42,12 @@ void init_scene(Scene* scene)
 	
 	load_model("models/barn.obj",&scene->house.model);
 
-	/**load_model("models/grass1.obj",&scene->grass.model);
+	/**
+	grass generálás egy négyzetrácsra random eltolódásokkal x y irényokba.
+	Sajnos nem bírja a gép :(
+	load_model("models/grass1.obj",&scene->grass.model);
 	
+	Utilban van:
 	genGrid(grassLocations);*/
 	
 	/**Kornyezeti vilagitas:*/
@@ -78,7 +72,6 @@ void init_scene(Scene* scene)
 
 void draw_scene(Scene* scene)
 {
-    //set_material(&(scene->material));
     set_lighting();
     draw_origin();
 	white_material(scene);/**Skybox Fehér Material*/
@@ -124,7 +117,7 @@ void set_lighting()
     glLightfv(GL_LIGHT1, GL_SPECULAR, specular_light1);
     glLightfv(GL_LIGHT1, GL_POSITION, position1);
 	
-/**
+/**Egy bátor spotlight próbálkozás
 	
 	float ambient_light2[] = { 1.0f, 0.0f, 0.0f, 1.0f };
     float diffuse_light2[] = { 1.0f, 0.0f, 0.0f, 1.0f };
@@ -176,32 +169,6 @@ void set_lighting_intensity(double lightGet)
 		light = light;
 	}
 }
-/**Anyagtulajdonságok
-void set_material(const Material* material)
-{
-    float ambient_material_color[] = {
-        material->ambient.red,
-        material->ambient.green,
-        material->ambient.blue
-    };
-
-    float diffuse_material_color[] = {
-        material->diffuse.red,
-        material->diffuse.green,
-        material->diffuse.blue
-    };
-
-    float specular_material_color[] = {
-        material->specular.red,
-        material->specular.green,
-        material->specular.blue
-    };
-
-    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ambient_material_color);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuse_material_color);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular_material_color);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, &(material->shininess));
-}*/
 
 void white_material(Scene* scene)
 {
