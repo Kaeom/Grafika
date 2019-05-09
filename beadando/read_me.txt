@@ -5,14 +5,14 @@ Kezelés:
 	-Q,E a kamera mozgatása fel, le;
 	-X,C a fények be- és kikapcsolására;
 	-F köd ki/be kapcsolása;
-	-+,- fények állítása;
+	-8,9 fények állítása;
 	-Tehén irányítása:
-		-Numpad 8 elõre;
-		-Numpad 2 hátra;
-		-Numpad 4 jobbra;
-		-Numpad 6 balra;
-		-Numpad 7 balra fordulás;
-		-Numbad 9 jobbra fordulás;
+		-Numpad u elõre;
+		-Numpad j hátra;
+		-Numpad z jobbra;
+		-Numpad i balra;
+		-Numpad h balra fordulás;
+		-Numbad k jobbra fordulás;
 	-Bal egérgomb+mozgatás a kamera szög váltására.
 	-Jobb egérgomb Menü.
 

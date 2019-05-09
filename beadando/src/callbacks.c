@@ -1,8 +1,6 @@
 #include "callbacks.h"
 #include <GL/glut.h>
 #include <SOIL/SOIL.h>
-#include <obj/load.h>
-#include <obj/draw.h>
 #define VIEWPORT_RATIO (16.0 / 9.0)
 #define VIEWPORT_ASPECT 70.0
 
@@ -67,64 +65,97 @@ void motion(int x, int y)
 void pressKey(unsigned char key, int x, int y)
 {
     switch (key) {
-    case 'w': //elore mozgas
+    case 'w': /**elore mozgas*/
 		set_camera_speed(&camera, 5);
         break;
-    case 's': //hatra mozgas
+    case 's': /**hatra mozgas*/
 		set_camera_speed(&camera, -5);
         break;
-    case 'a': //balra mozgas
+    case 'a': /**balra mozgas*/
         set_camera_side_speed(&camera, 5);
         break;
-    case 'd': //jobbra mozgas
+    case 'd': /**jobbra mozgas*/
         set_camera_side_speed(&camera, -5);
         break;
-	case 'f': //Fog
+	case 'r': /**Fog*/
 		glDisable(GL_FOG);
 		break;		
-	case 'e': //kamera le
-        set_camera_height(&camera, -0.1);
+	case 'e': /**kamera le*/
+        set_camera_height(&camera, -5);
         break;
-	case 'q': //kamera fel
-		set_camera_height(&camera, 0.1);
+	case 'q': /**kamera fel*/
+		set_camera_height(&camera, 5);
+		break;
+	/**	
+	case 'v':
+		set_spot(1,0,0,0,0);
+		break;
+	case 'b':
+		set_spot(0,1,0,0,0);
+		break;
+	case 'n':
+		set_spot(0,0,1,0,0);
+		break;
+	case 'm':
+		set_spot(0,0,0,10,0);
+		break;
+	case ',':
+		set_spot(0,0,0,0,1);
 		break;
 		
-	case '-': //Lights -
+	case 'f':
+		set_spot(-1,0,0,0,0);
+		break;
+	case 'g':
+		set_spot(0,-1,0,0,0);
+		break;
+	case 'h':
+		set_spot(0,0,-1,0,0);
+		break;
+	case 'j':
+		set_spot(0,0,0,-10,0);
+		break;
+	case 'k':
+		set_spot(0,0,0,0,-1);
+		break;
+		*/
+	
+	case 'n': /**Lights -*/
 		set_lighting_intensity(-0.05f);
         break;
-	case '+': //Lights +
+	case 'm': /**Lights +*/
         set_lighting_intensity(0.05f);
         break;
 		
-	//Cow_controll	
-	case '8': //cow forward
-		move_cow_x(0.05f);
+	/**Cow_controll	*/
+	case 'u': /**cow forward*/
+		move_cow_x(5.0f);
 		break;
-	case '5': //cow backward
-		move_cow_x(-0.05f);
+	case 'j': /**cow backward*/
+		move_cow_x(-5.0f);
 		break;
-	case '4': //cow left
-		move_cow_y(0.05f);
+	case 'z': /**cow left*/
+		move_cow_y(-5.0f);
 		break;
-	case '6': //cow right
-		move_cow_y(-0.05f);
+	case 'i': /**cow right*/
+		move_cow_y(5.0f);
 		break;
-	/*case '7': //cow angle left
-		move_cow_angle(5.0f);
+	case 'h': /**cow angle left*/
+		move_cow_angle(60.0f);
 		break;
-	case '9': //cow angle right
-		move_cow_angle(-5.0f);
+	case 'k': /**cow angle right*/
+		move_cow_angle(-60.0f);
 		break;
-	*/
-	case 'x': //Lights off
+	
+	case 'x': /**Lights off*/
 		glDisable(GL_LIGHT0);
 		glDisable(GL_LIGHT1);
         break;
-	case 'c': //Lights on
+	case 'c': /**Lights on*/
 		glEnable(GL_LIGHT0);
 		glEnable(GL_LIGHT1);
         break;
-	case 27: //Exit
+	case 27: /**Exit*/
 		exit(0);
         break;
 	}
@@ -142,37 +173,39 @@ void releaseKey(unsigned char key, int x, int y)
     case 'd':
         set_camera_side_speed(&camera, 0.0);
         break;
-		
-	case '8': //cow forward
+	case 'q':
+	case 'e':
+		set_camera_height(&camera, 0);
+		break;		
+	case 'u':
+	case 'j':
 		move_cow_x(0.00f);
 		break;
-	case '5': //cow backward
-		move_cow_x(-0.00f);
-		break;
-	case '4': //cow left
+	case 'z':
+	case 'i':
 		move_cow_y(0.00f);
 		break;
-	case '6': //cow right
-		move_cow_y(-0.00f);
+	case 'h':
+	case 'k':
+		move_cow_angle(0.0f);
 		break;
-		
-	case 'f': //Fog
+	case 'r': /**Fog*/
 		glEnable(GL_FOG);
 		break;		
-	case '-': //Lights -
+	case 'n': /**Lights -*/
 		set_lighting_intensity(-0.05f);
         break;
-	case '+': //Lights +
+	case 'm': /**Lights +*/
         set_lighting_intensity(0.05f);
         break;
-	case 'x':
+	/**case 'x':
 		glDisable(GL_LIGHT0);
 		glDisable(GL_LIGHT1);
         break;
 	case 'c':
 		glEnable(GL_LIGHT0);
 		glEnable(GL_LIGHT1);
-        break;
+        break;*/
 	}
     glutPostRedisplay();
 }

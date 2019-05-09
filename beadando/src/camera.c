@@ -28,6 +28,7 @@ void update_camera(Camera* camera, double time)
     camera->position.y += sin(angle) * camera->speed.y * time;
     camera->position.x += cos(side_angle) * camera->speed.x * time;
     camera->position.y += sin(side_angle) * camera->speed.x * time;
+	camera->position.z += camera->speed.z * time;
 	
 	/*Utkozesvizsgalat*/
 	if((camera->position.x)<-29.8)
@@ -98,7 +99,7 @@ void set_camera_side_speed(Camera* camera, double speed)
 	camera->speed.x = speed;
 }
 
-void set_camera_height(Camera* camera, double height)
+void set_camera_height(Camera* camera, double speed)
 {
-    camera->position.z += height;
+    camera->speed.z = speed;
 }
